@@ -1,0 +1,2 @@
+# Redirect default Netlify subdomain to primary domain
+http://confident-jones-4dda59.netlify.com/* http://js30.nikl.me/:splat 301!
