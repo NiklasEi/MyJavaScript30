@@ -1,11 +1,20 @@
-function playSound(e) {
-    const audio =  document.querySelector(`audio[data-key="${e.keyCode}"]`);
+function keyDown(e) {
+    playSound(e.keyCode);
+}
+
+function playSound(dataKey) {
+    const audio =  document.querySelector(`audio[data-key="${dataKey}"]`);
     if(!audio) return;
     audio.currentTime = 0;
     audio.play();
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${dataKey}"]`);
     if(!key) return;
     key.classList.add('playing');
+}
+
+function onClick(element) {
+    if(!element.dataset.key) return;
+    playSound(element.dataset.key)
 }
 
 function removeTransition(e) {
@@ -14,5 +23,5 @@ function removeTransition(e) {
 }
 
 const keys = document.querySelectorAll('.key');
-window.addEventListener('keydown', playSound);
+window.addEventListener('keydown', keyDown);
 keys.forEach(key => key.addEventListener('transitionend', removeTransition))
