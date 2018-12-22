@@ -8,10 +8,10 @@
 <body>
 
 <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
+    <input type="text" class="search" placeholder="Type to filter">
     <ul class="suggestions">
-        <li>Filter for a city</li>
-        <li>or a state</li>
+        <li>Loading data</li>
+        <li>Please wait...</li>
     </ul>
 </form>
 <script>
@@ -20,7 +20,10 @@
     const cities = [];
     fetch(endpoint)
         .then(blob => blob.json())
-        .then(data => cities.push(...data));
+        .then(data => {
+            cities.push(...data);
+            displayMatches('');
+        });
 
     function findMatches(word, cities) {
         const regex = new RegExp(word, 'gi');
@@ -33,9 +36,10 @@
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    function displayMatches() {
-        const matchArray = findMatches(this.value, cities);
-        const regex = new RegExp(this.value.toLowerCase(), 'gi');
+    function displayMatches(word) {
+        const value = word === '' ? '' : this.value;
+        const matchArray = findMatches(value, cities);
+        const regex = new RegExp(value.toLowerCase(), 'gi');
         const html = matchArray.map(place => {
             const cityName = place.city.replace(regex, match => `<span class="hl">${match}</span>`);
             const stateName = place.state.replace(regex, match => `<span class="hl">${match}</span>`);
